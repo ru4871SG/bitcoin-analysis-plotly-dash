@@ -417,7 +417,13 @@ app.layout = html.Div([
     html.Div([
         html.H1("Bitcoin (BTC) September 2023 Report", className="title_text", id="title_text_1"),
         html.H5("by: Ruddy Setiadi Gunawan", className="author_text", id="author_text_1"),
-        
+
+        html.P([
+            "Data for this analysis is originally sourced from CoinGecko, mempool, and Yahoo Finance, and has been \
+                systematically cleaned and transformed. For detailed methodology, visit my ",
+            html.A("GitHub repo", href="https://github.com/ru4871SG/bitcoin-analysis-plotly-dash", target="_blank", className="repo_link", id="repo_link_1")
+        ], className="paragraph_text", id="tutorial_text"),
+
         html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
         
         html.Ul([
