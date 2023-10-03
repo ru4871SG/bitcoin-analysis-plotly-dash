@@ -463,7 +463,7 @@ app.layout = html.Div([
 
         html.P("The above chart normalized the starting prices of the three objects (BTC, NDX, and \
              Gold) to make it easier to see their correlation. As you can see in the above chart, \
-            Bitcoin has been underperforming in the past 3 months compared to NDX and Gold. \
+            Bitcoin has been underperforming from early July to end of September compared to NDX and Gold. \
                 On August 16th, Bitcoin suffered a heavy bearish pressure, and it never \
                     really recovered ever since. Meanwhile, NDX and Gold have been much more \
                         stable compared to Bitcoin. It remains to be seen whether Bitcoin price action \
@@ -498,18 +498,16 @@ app.layout = html.Div([
 
             dcc.Graph(id='scatter-chart'),
             
-        html.P("Our second analysis used scatter plots to determine the correlation between Bitcoin vs. \
-               NDX and Bitcoin vs. Gold. Both scatter plots show moderate correlation, although they are not \
-                   tightly correlated. I have also included the linear regression (trend) line so you can \
-                       see for yourself how closely related the x-axis and y-axis are.", 
+        html.P("My second analysis uses EDA (Exploratory data analysis) with scatter plots to check the \
+               correlation between Bitcoin vs. NDX and Bitcoin vs. Gold. Both scatter plots show moderate \
+                   correlation, although they are not tightly correlated. I have also included the linear \
+                       regression (trend) line so you can check the consistencies of the data points against \
+                           the trend line.", 
                className="paragraph_text", id="paragraph_text_2_1"),
             
-        html.P("The first two data visualizations above show that Bitcoin's price action is not as consistent \
-               as Gold and NDX. While more volatility is already expected from Bitcoin, past trends have \
-                   typically shown similar trends (at least between Bitcoin and NDX). In contrast, the \
-                       current trend no longer offers the same direction. However, many experts predict \
-                           that they may become closely correlated again when the Fed starts to lower the \
-                               interest rate in the U.S.", 
+        html.P("You can see there are a lot of data points that are far away from the trend line. This finding \
+               indicates a lot of variability. That means Bitcoin price action (between July and September) did \
+                   not closely follow the price action of NDX or Gold.", 
                className="paragraph_text", id="paragraph_text_2_2"),
         ], className="section", id='section2'),
 
