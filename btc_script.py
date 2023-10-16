@@ -186,7 +186,7 @@ btc_community_df.reset_index(drop=True, inplace=True)
 # combine developers and community data
 btc_combined_data = pd.concat([btc_community_df[["twitter_followers"]], btc_developers_df], axis=1)
 
-# rename columns
+# rename columns and use melt to reshape the data frame
 btc_combined_data.rename(columns={
     "forks": "github forks",
     "stars": "github stars",
@@ -194,21 +194,19 @@ btc_combined_data.rename(columns={
     "twitter_followers": "twitter followers"
 }, inplace=True)
 
-# use melt (similar to pivot_longer in R)
 btc_combined_data = btc_combined_data.round(0).melt(var_name="Data", value_name="Value")
 
 
 # %%
 
 ## Part 5: Bitcoin Stats
-response = requests.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=90d&locale=en", \
-                        timeout=10)
 
 # Define an error handling function for clarity
 def fetch_btc_stats():
     """function to fetch Bitcoin stats from CoinGecko API"""
     try:
-        response = requests.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=90d&locale=en")
+        response = requests.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=90d&locale=en", \
+                                timeout=10)
         response.raise_for_status()  # This will help to raise an HTTP Error if one exists
 
         data = response.json()
@@ -232,7 +230,7 @@ btc_stats = fetch_btc_stats()
 if btc_stats is None:
     print("Failed to fetch Bitcoin stats.")
 else:
-    # Continue processing with `btc_stats`
+    # Continue processing
     pass
 
 # Selecting the required columns
@@ -256,8 +254,7 @@ btc_stats_1 = {column_rename[key] if key in column_rename \
 # Converting the dictionary to DataFrame and then melting (similar to pivot_longer in R)
 btc_stats_cleaned = pd.DataFrame([btc_stats_1]).melt(var_name="Data", value_name="Value").round(0)
 
-# Since we already created `btc_combined_data` from the previous Python code, \
-# we can concatenate both DataFrames
+# Since we already created `btc_combined_data`, we can concatenate both DataFrames
 btc_combined_data_final = pd.concat([btc_stats_cleaned, btc_combined_data], ignore_index=True)
 
 
@@ -270,11 +267,10 @@ exchange_names = ["binance", "gdax", "kraken", "kucoin", "bitstamp", \
                   "okex", "bitfinex", "huobi", "gemini"]
 
 # Initialize an empty dataframe to store the final result
-SPOT_EXCHANGES_VOLUME = None
+spot_exchanges_volume = None
 
 # Loop through top exchanges
 for exchange in exchange_names:
-    # Fetch data from API
     url = f"https://api.coingecko.com/api/v3/exchanges/{exchange}/volume_chart?days=90"
     details = requests.get(url, timeout=10)
     details_data = details.json()
@@ -291,32 +287,30 @@ for exchange in exchange_names:
     volume = volume[["date", f"{exchange}_vol_in_btc"]]
 
     # Merge with the final dataframe
-    if SPOT_EXCHANGES_VOLUME is None:
-        SPOT_EXCHANGES_VOLUME = volume
+    if spot_exchanges_volume is None:
+        spot_exchanges_volume = volume
     else:
-        SPOT_EXCHANGES_VOLUME = pd.merge(SPOT_EXCHANGES_VOLUME, volume, on="date", how="left")
+        spot_exchanges_volume = pd.merge(spot_exchanges_volume, volume, on="date", how="left")
 
 # Convert the volume columns to float64
-SPOT_EXCHANGES_VOLUME['binance_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['binance_vol_in_btc']\
+spot_exchanges_volume['binance_vol_in_btc'] = spot_exchanges_volume['binance_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['gdax_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['gdax_vol_in_btc']\
+spot_exchanges_volume['gdax_vol_in_btc'] = spot_exchanges_volume['gdax_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['kraken_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['kraken_vol_in_btc']\
+spot_exchanges_volume['kraken_vol_in_btc'] = spot_exchanges_volume['kraken_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['kucoin_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['kucoin_vol_in_btc']\
+spot_exchanges_volume['kucoin_vol_in_btc'] = spot_exchanges_volume['kucoin_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['bitstamp_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['bitstamp_vol_in_btc']\
+spot_exchanges_volume['bitstamp_vol_in_btc'] = spot_exchanges_volume['bitstamp_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['okex_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['okex_vol_in_btc']\
+spot_exchanges_volume['okex_vol_in_btc'] = spot_exchanges_volume['okex_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['bitfinex_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['bitfinex_vol_in_btc']\
+spot_exchanges_volume['bitfinex_vol_in_btc'] = spot_exchanges_volume['bitfinex_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['huobi_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['huobi_vol_in_btc']\
+spot_exchanges_volume['huobi_vol_in_btc'] = spot_exchanges_volume['huobi_vol_in_btc']\
                                           .astype('float64')
-SPOT_EXCHANGES_VOLUME['gemini_vol_in_btc'] = SPOT_EXCHANGES_VOLUME['gemini_vol_in_btc']\
+spot_exchanges_volume['gemini_vol_in_btc'] = spot_exchanges_volume['gemini_vol_in_btc']\
                                           .astype('float64')
-
-
 
 # %%
 
@@ -344,5 +338,5 @@ btc_90d_w_external.to_pickle('btc_90d_w_external.pkl')
 mempool_stats_30d_grouped.to_pickle('mempool_stats_30d_grouped.pkl')
 btc_mining_pools.to_pickle('btc_mining_pools.pkl')
 btc_combined_data_final.to_pickle('btc_combined_data_final.pkl')
-SPOT_EXCHANGES_VOLUME.to_pickle('spot_exchanges_volume.pkl')
+spot_exchanges_volume.to_pickle('spot_exchanges_volume.pkl')
 lightning_mempool_total_capacity.to_pickle('lightning_mempool_total_capacity.pkl')

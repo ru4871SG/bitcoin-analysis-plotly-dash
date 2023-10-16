@@ -27,7 +27,7 @@ python app.py
 That's it! You will be able to run it in localhost.
 
 ## Explanation
-There are two Python scripts that you can check in this repo:
+There are two main Python scripts that you can check in this repo:
 
 `btc_script.py` - This script is used to pull data from three different API sources (CoinGecko, MemPool, and Yahoo Finance). The same script also contains all of my data wrangling steps. The Pickle files are the automatic result of this script's operation. 
 
@@ -38,3 +38,5 @@ You may want to ask, why do we need the Pickle files? Because otherwise `app.py`
 The workflow basically works like this:
 1. run `btc_script.py` => pull API data to pandas data frames, transform and analyze the data frames, and generate Pickle files
 2. run `app.py` => visualize the data from the Pickle files at the end of `btc_script.py`, and put the visualizations together in the web dashboard using the dash library
+
+Update (October 15, 2023): I have uploaded `eth_script.py` - This script basically works just like `btc_script.py`, but for Ethereum data. I use CoinGecko, Owlracle, and DefiLlama as my API sources. I will update `app.py` to include data visualizations from Ethereum by the end of October.
