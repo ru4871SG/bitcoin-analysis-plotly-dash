@@ -1,5 +1,5 @@
 """
-Data Visualization and Dashboarding
+Data Visualization and Dashboarding - Bitcoin
 """
 
 ## Libraries
@@ -685,9 +685,9 @@ def update_scatter_chart(y_axis_variable):
 ### Run the app
 
 # dev_tools_hot_reload set to false to prevent automatic refresh
-# comment out the first two lines below to test in the localhost
+# the first two lines below are for the localhost
 
-# if __name__ == '__main__':
-#     app.run_server(debug=True, dev_tools_hot_reload=False)
 if __name__ == '__main__':
-    app.run_server(debug=True, dev_tools_hot_reload=False, host='0.0.0.0', port=10000)
+    app.run_server(debug=True, dev_tools_hot_reload=False)
+# if __name__ == '__main__':
+#     app.run_server(debug=True, dev_tools_hot_reload=False, host='0.0.0.0', port=10000)

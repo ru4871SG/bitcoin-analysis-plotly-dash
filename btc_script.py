@@ -82,9 +82,6 @@ btc_90d_w_external['btc_price_change'] = btc_90d_w_external['price'].pct_change(
 btc_90d_w_external['ndx_price_change'] = btc_90d_w_external['ndx_price'].pct_change() * 100
 btc_90d_w_external['gold_price_change'] = btc_90d_w_external['gold_price'].pct_change() * 100
 
-# Check the length of the dataframe
-print(len(btc_90d_w_external))
-
 # Remove the last row of the dataframe
 btc_90d_w_external = btc_90d_w_external.iloc[:-1]
 
@@ -95,7 +92,6 @@ btc_90d_w_external['ndx_price_normalized'] = btc_90d_w_external['ndx_price'] \
                                          / btc_90d_w_external['ndx_price'].iloc[0]
 btc_90d_w_external['gold_price_normalized'] = btc_90d_w_external['gold_price'] \
                                          / btc_90d_w_external['gold_price'].iloc[0]
-
 
 
 # %%
@@ -147,7 +143,6 @@ mempool_stats_30d_grouped = mempool_stats_30d.groupby('block_group')\
                                 .reset_index()\
                                 .assign(block_group=lambda x: x['block_group']\
                                 .max() - x['block_group'] + 1)
-
 
 
 # %%
@@ -257,6 +252,22 @@ btc_stats_cleaned = pd.DataFrame([btc_stats_1]).melt(var_name="Data", value_name
 # Since we already created `btc_combined_data`, we can concatenate both DataFrames
 btc_combined_data_final = pd.concat([btc_stats_cleaned, btc_combined_data], ignore_index=True)
 
+# fix the value format
+def format_value(data, value):
+    """function to format the value in btc_combined_data_final"""
+    conditions = [
+        "market cap", "fully diluted valuation",
+        "ATH", "ATL"
+    ]
+
+    if data in conditions:
+        return "${:,.0f}".format(value)
+    else:
+        return "{:,.0f}".format(value)
+
+btc_combined_data_final['Value'] = btc_combined_data_final.apply(lambda row: \
+                                        format_value(row['Data'], row['Value']), axis=1)
+
 
 # %%
 
@@ -334,9 +345,10 @@ lightning_mempool_total_capacity = lightning_mempool_total_capacity[\
 # %%
 
 ## Export Finished Dataframes to Pickles, so we won't hit API rate limits in the Dash dashboard
-btc_90d_w_external.to_pickle('btc_90d_w_external.pkl')
-mempool_stats_30d_grouped.to_pickle('mempool_stats_30d_grouped.pkl')
-btc_mining_pools.to_pickle('btc_mining_pools.pkl')
-btc_combined_data_final.to_pickle('btc_combined_data_final.pkl')
-spot_exchanges_volume.to_pickle('spot_exchanges_volume.pkl')
-lightning_mempool_total_capacity.to_pickle('lightning_mempool_total_capacity.pkl')
+# Once the Pickles are generated, move them from "unassigned" to their respective months
+btc_90d_w_external.to_pickle('pickles/unassigned/btc_90d_w_external.pkl')
+mempool_stats_30d_grouped.to_pickle('pickles/unassigned/mempool_stats_30d_grouped.pkl')
+btc_mining_pools.to_pickle('pickles/unassigned/btc_mining_pools.pkl')
+btc_combined_data_final.to_pickle('pickles/unassigned/btc_combined_data_final.pkl')
+spot_exchanges_volume.to_pickle('pickles/unassigned/spot_exchanges_volume.pkl')
+lightning_mempool_total_capacity.to_pickle('pickles/unassigned/lightning_mempool_total_capacity.pkl')

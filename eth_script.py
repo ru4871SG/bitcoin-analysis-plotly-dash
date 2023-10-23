@@ -1,5 +1,5 @@
 """
-Data Import and Wrangling Steps - ethereum
+Data Import and Wrangling Steps - Ethereum
 """
 
 # %%
@@ -35,7 +35,7 @@ eth_marketcap_90d['marketcap'] = eth_marketcap_90d['marketcap'].apply(lambda x: 
 eth_marketcap_90d['time'] = pd.to_datetime(eth_marketcap_90d['time'] / 1000, unit='s', \
                                            origin='unix', utc=True)
 
-# Get ETH/BTC price as well for comparison
+# Get ETH/BTC price for comparison
 response = requests.get("https://api.coingecko.com/api/v3/coins/ethereum/market_chart?vs_currency=btc&days=90&interval=daily", \
                         timeout=10)
 content = response.content
@@ -56,8 +56,8 @@ eth_90d = eth_price_90d.merge(eth_marketcap_90d, on='time').merge(eth_total_volu
 # Create date column on the merged dataframe
 eth_90d['Date'] = eth_90d['time'].dt.date
 
-end_date = eth_90d['Date'].max()
-start_date = eth_90d['Date'].min()
+# Convert 'Date' column to datetime format
+eth_90d['Date'] = pd.to_datetime(eth_90d['Date'])
 
 # %%
 
@@ -83,9 +83,9 @@ eth_gas_fee[['gasPrice_open', 'gasPrice_close', 'gasPrice_low', \
              'gasPrice_high']] = eth_gas_fee['gasPrice'].apply(pd.Series)
 eth_gas_fee.drop('gasPrice', axis=1, inplace=True)
 
-# Convert the 'timestamp' column to a datetime format, then format the time column properly
-eth_gas_fee['time'] = pd.to_datetime(eth_gas_fee['timestamp'])
-eth_gas_fee['time'] = eth_gas_fee['time'].dt.strftime('%Y-%m-%d %H:%M:%S.%f')
+# Convert the 'timestamp' column to a datetime format, then format the Date column properly
+eth_gas_fee['Date'] = pd.to_datetime(eth_gas_fee['timestamp'])
+eth_gas_fee['Date'] = eth_gas_fee['Date'].dt.strftime('%Y-%m-%d')
 
 
 # %%
@@ -128,7 +128,7 @@ eth_combined_data = eth_combined_data.round(0).melt(var_name="Data", value_name=
 
 # %%
 
-## Part 4: ethereum Stats
+## Part 4: Ethereum Stats
 
 # Define an error handling function for clarity
 def fetch_eth_stats():
@@ -186,22 +186,44 @@ eth_stats_cleaned = pd.DataFrame([eth_stats_1]).melt(var_name="Data", value_name
 # Since we already created `eth_combined_data`, we can concatenate both DataFrames
 eth_combined_data_final = pd.concat([eth_stats_cleaned, eth_combined_data], ignore_index=True)
 
+# there's no max supply value for ETH, so we need to drop it before applying format_value function
+eth_mask = (eth_combined_data_final['Data'] == 'max supply')
+eth_combined_data_final = eth_combined_data_final.drop(eth_combined_data_final[eth_mask].index)
+
+def format_value(data, value):
+    """function to format the value in eth_combined_data_final"""
+    conditions = [
+        "market cap", "fully diluted valuation",
+        "ATH", "ATL"
+    ]
+
+    if data in conditions:
+        return "${:,.0f}".format(value)
+    else:
+        return "{:,.0f}".format(value)
+
+eth_combined_data_final['Value'] = eth_combined_data_final.apply(lambda row: \
+                                        format_value(row['Data'], row['Value']), axis=1)
+
 
 # %%
 
-## Part 5: Ethereum DeFi Historical TVL Data from DefiLlama
+## Part 5: Ethereum Historical TVL Data from DefiLlama
 # Documentation: https://defillama.com/docs/api
 
 response = requests.get("https://api.llama.fi/v2/historicalChainTvl/Ethereum", \
-                        timeout=10)
+                        timeout=30)
 content = response.content
 data = json.loads(content)
 
-eth_defi_tvl = pd.DataFrame(data)
+eth_tvl = pd.DataFrame(data)
 
-# Fix the TVL value and time format (from UNIX)
-eth_defi_tvl['tvl'] = eth_defi_tvl['tvl'].apply(lambda x: format(x, ','))
-eth_defi_tvl['date'] = pd.to_datetime(eth_defi_tvl['date'], unit='s', origin='unix', utc=True)
+# Fix the TVL value and the Date format (from UNIX)
+eth_tvl['tvl'] = eth_tvl['tvl'].apply(lambda x: format(x, ','))
+eth_tvl['date'] = pd.to_datetime(eth_tvl['date'], unit='s', origin='unix', utc=True)
+eth_tvl['date'] = eth_tvl['date'].dt.date
+eth_tvl.rename(columns={'date': 'Date'}, inplace=True)
+eth_tvl['Date'] = pd.to_datetime(eth_tvl['Date'])
 
 # %%
 
@@ -215,7 +237,7 @@ eth_defi_protocol_list_names = ["aave", "lido", "makerdao", "uniswap", "summer.f
 eth_defi_protocol_list = []
 
 for protocol in eth_defi_protocol_list_names:
-    response = requests.get(f"https://api.llama.fi/protocol/{protocol}", timeout=10)
+    response = requests.get(f"https://api.llama.fi/protocol/{protocol}", timeout=30)
     content = response.content
     data = json.loads(content)
 
@@ -236,66 +258,17 @@ eth_defi_tvl_top10 = eth_defi_protocol_list[0]
 for df in eth_defi_protocol_list[1:]:
     eth_defi_tvl_top10 = pd.merge(eth_defi_tvl_top10, df, on='date', how='inner')
 
-# %%
+# rename date to Date for consistency
+eth_defi_tvl_top10.rename(columns={'date': 'Date'}, inplace=True)
+eth_defi_tvl_top10['Date'] = pd.to_datetime(eth_defi_tvl_top10['Date'])
 
-## Part 7: Exchanges (Spot) Data
-
-# List of top exchanges
-exchange_names = ["binance", "gdax", "kraken", "kucoin", "bitstamp", \
-                  "okex", "bitfinex", "huobi", "gemini"]
-
-# Initialize an empty variable to store the result later
-spot_exchanges_volume = None
-
-# Loop through top exchanges
-for exchange in exchange_names:
-    url = f"https://api.coingecko.com/api/v3/exchanges/{exchange}/volume_chart?days=90"
-    details = requests.get(url, timeout=10)
-    details_data = details.json()
-
-    # Convert to dataframe
-    volume = pd.DataFrame(details_data, columns=["timestamp", f"{exchange}_vol_in_eth"])
-
-    # Fix UNIX time stamp, data type, and decimal numbers
-    volume["timestamp"] = volume["timestamp"].astype(float)
-    volume["date_with_hour"] = pd.to_datetime(volume["timestamp"], unit='ms', \
-                                              origin='unix', utc=True)
-    volume["date"] = volume["date_with_hour"].dt.date
-    volume[f"{exchange}_vol_in_eth"] = volume[f"{exchange}_vol_in_eth"]
-    volume = volume[["date", f"{exchange}_vol_in_eth"]]
-
-    # Merge with the final dataframe
-    if spot_exchanges_volume is None:
-        spot_exchanges_volume = volume
-    else:
-        spot_exchanges_volume = pd.merge(spot_exchanges_volume, volume, on="date", how="left")
-
-# Convert the volume columns to float64
-spot_exchanges_volume['binance_vol_in_eth'] = spot_exchanges_volume['binance_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['gdax_vol_in_eth'] = spot_exchanges_volume['gdax_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['kraken_vol_in_eth'] = spot_exchanges_volume['kraken_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['kucoin_vol_in_eth'] = spot_exchanges_volume['kucoin_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['bitstamp_vol_in_eth'] = spot_exchanges_volume['bitstamp_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['okex_vol_in_eth'] = spot_exchanges_volume['okex_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['bitfinex_vol_in_eth'] = spot_exchanges_volume['bitfinex_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['huobi_vol_in_eth'] = spot_exchanges_volume['huobi_vol_in_eth']\
-                                          .astype('float64')
-spot_exchanges_volume['gemini_vol_in_eth'] = spot_exchanges_volume['gemini_vol_in_eth']\
-                                          .astype('float64')
 
 # %%
 
 ## Export Finished Dataframes to Pickles, so we won't hit API rate limits in the Dash dashboard
-eth_90d.to_pickle('eth_90d.pkl')
-eth_gas_fee.to_pickle('eth_gas_fee.pkl')
-eth_combined_data_final.to_pickle('eth_combined_data_final.pkl')
-eth_defi_tvl.to_pickle('eth_defi_tvl.pkl')
-eth_defi_tvl_top10.to_pickle('eth_defi_tvl_top10.pkl')
-spot_exchanges_volume.to_pickle('spot_exchanges_volume.pkl')
+# Once the Pickles are generated, move them from "unassigned" to their respective months
+eth_90d.to_pickle('pickles/unassigned/eth_90d.pkl')
+eth_gas_fee.to_pickle('pickles/unassigned/eth_gas_fee.pkl')
+eth_combined_data_final.to_pickle('pickles/unassigned/eth_combined_data_final.pkl')
+eth_tvl.to_pickle('pickles/unassigned/eth_tvl.pkl')
+eth_defi_tvl_top10.to_pickle('pickles/unassigned/eth_defi_tvl_top10.pkl')
