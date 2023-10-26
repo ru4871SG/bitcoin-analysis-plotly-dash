@@ -2,13 +2,15 @@
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 
+# import generate_sidebar from the main app.py
+from app import generate_sidebar
+
+# app_layout package
 import app_layout.main_pane as main_pane
-import app_layout.sidebar as sidebar
 
 import dash
-from dash import dcc, html
-from dash import dash_table
-from dash.dependencies import Input, Output, State
+from dash import html
+# from dash.dependencies import Input, Output, State
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -346,8 +348,9 @@ index_string = '''
 </html>
 '''
 
+# Define the app layout for this page
 layout = html.Div([
-    sidebar.generate(btc_combined_data_final),
+    generate_sidebar(btc_combined_data_final),
     main_pane.generate(
         header(),
         key_insights(),
