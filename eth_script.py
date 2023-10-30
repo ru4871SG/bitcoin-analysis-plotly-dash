@@ -59,6 +59,16 @@ eth_90d['Date'] = eth_90d['time'].dt.date
 # Convert 'Date' column to datetime format
 eth_90d['Date'] = pd.to_datetime(eth_90d['Date'])
 
+# Change data type for consistency
+eth_90d['price'] = eth_90d['price'].str.replace(',', '').astype(float)
+eth_90d['price_vs_btc'] = eth_90d['price_vs_btc'].str.replace(',', '').astype(float)
+
+# Normalize the price between ETH vs. USD and ETH vs. BTC
+eth_90d['eth_vs_usd_normalized'] = eth_90d['price'] \
+                                         / eth_90d['price'].iloc[0]
+eth_90d['eth_vs_btc_normalized'] = eth_90d['price_vs_btc'] \
+                                         / eth_90d['price_vs_btc'].iloc[0]
+
 # %%
 
 ## Part 2: Average Gas Fee History from Owlracle for the Past 30 Days
@@ -71,7 +81,7 @@ config.read('config.ini')
 API_KEY = config['DEFAULT']['OWLRACTLE_API_KEY']
 
 response = requests.get(f"https://api.owlracle.info/v4/eth/history?apikey={API_KEY}&candles=30&timeframe=1440", \
-                        timeout=10)
+                        timeout=30)
 
 content = response.content
 data = json.loads(content)
@@ -164,7 +174,7 @@ else:
 
 # Selecting the required columns
 columns = ["market_cap", "market_cap_rank", "fully_diluted_valuation", \
-           "circulating_supply", "max_supply", "ath", "atl"]
+           "circulating_supply", "max_supply", "ath"]
 eth_stats_1 = {col: eth_stats[col] for col in columns if col in eth_stats}
 
 # Rename columns
@@ -174,8 +184,7 @@ column_rename = {
     "fully_diluted_valuation": "fully diluted valuation",
     "circulating_supply": "circulating supply",
     "max_supply": "max supply",
-    "ath": "ATH",
-    "atl": "ATL"
+    "ath": "ATH"
 }
 eth_stats_1 = {column_rename[key] if key in column_rename \
                else key: value for key, value in eth_stats_1.items()}

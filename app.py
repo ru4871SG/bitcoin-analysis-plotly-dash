@@ -6,17 +6,17 @@ from sklearn.linear_model import LinearRegression
 import app_layout.sidebar as sidebar
 
 import dash
-from dash import Dash, html, dcc
+from dash import Dash, dcc, html
 
-# generate sidebar, including internal pages - mobile layout is not yet done, fix this later, 
-# including Mobile and Tablet Layouts in styles.css 
-def generate_sidebar(data_table):
+
+def sidebar_menu(data_table):
     return html.Div([
+        html.H3('Explore'),
         # Links
         html.Div([
             # Internal Pages
             html.Div(
-                dcc.Link(f"{page['name']}", href=page["relative_path"], style={'color': 'lightblue'}),
+                dcc.Link(f"{page['name'].title()}", href=page["relative_path"], style={'color': 'lightblue'}),
                 style={
                     'backgroundColor': '#2b2b2b',
                     'color': 'white',
@@ -30,7 +30,7 @@ def generate_sidebar(data_table):
         ] + [
             # External Links to External Websites (Example)
             html.Div([
-                html.A("Google", href="https://www.google.com", target="_blank", style={'color': 'lightblue'}),
+                html.A("Coingecko", href="https://www.coingecko.com", target="_blank", style={'color': 'lightblue'}),
             ], style={
                 'backgroundColor': '#2b2b2b',
                 'color': 'white',
@@ -49,9 +49,9 @@ def generate_sidebar(data_table):
         }),
 
         # Data Table
-        html.H4('Data Table'),
+        html.H3('Data Table'),
         sidebar.generate(data_table)
-    ], id='sidebar', style={'width': '25%', 'float': 'left'})
+    ], id='sidebar')
 
 
 # Use Multiple Pages
@@ -67,8 +67,4 @@ if __name__ == '__main__':
 
 
 ### NOT YET:
-
-# 1. scatter plot between BTC and Gold not yet done in btc_september_2023.py
-# 2. eth_october_2023.py has not been completed
 # 3. customize the homepage and sidebar
-# 4. sidebar is not working properly for mobile responsiveness, previously it followed the correct instructions in style.css

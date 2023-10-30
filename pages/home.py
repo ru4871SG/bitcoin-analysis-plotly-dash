@@ -9,7 +9,7 @@ from app import sidebar_menu
 import app_layout.main_pane as main_pane
 
 import dash
-from dash import html
+from dash import dcc, html
 # from dash.dependencies import Input, Output, State
 
 import plotly.express as px
@@ -342,11 +342,46 @@ fig6 = go.Figure(data=[trace1, trace2], layout=layout_fig6)
 
 
 ### Section 2: Define the App Layout and Texts
+def report_section():
+    return html.Div([
+        html.Div([
+            html.Div([
+                html.H3("Bitcoin", className="report_section_title"),
+                html.Img(src="assets/icons/btc.png", alt="Bitcoin", className="report_section_img"),
+                html.Ul([
+                    html.Li("October 2023"),
+                    html.Li(dcc.Link("September 2023", href="/btc-september-2023", style={'color': 'lightblue'}))
+                ], className="bullet_points")
+            ], className="report_section_column"),
+
+            html.Div([
+                html.H3("Ethereum", className="report_section_title"),
+                html.Img(src="assets/icons/eth.png", alt="Ethereum", className="report_section_img"),
+                html.Ul([
+                    html.Li(dcc.Link("October 2023", href="/eth-october-2023", style={'color': 'lightblue'}))
+                ], className="bullet_points")
+            ], className="report_section_column"),
+
+            html.Div([
+                html.H3("BNB", className="report_section_title"),
+                html.Img(src="assets/icons/bnb.png", alt="BNB", className="report_section_img"),
+                html.Ul([
+                    html.Li(dcc.Link("October 2023", href="/bnb-october-2023", style={'color': 'lightblue'}))
+                ], className="bullet_points")
+            ], className="report_section_column")
+        ], className="report_section_row")
+    ], className="report_section")
+
 def header():
     return html.Div([
+        html.H2("Monthly Cryptocurrency Analysis Report", className="title_text", id="title_text_1"),
+        html.H4(f"Choose a cryptocurrency analysis report (latest Bitcoin report shown by default)", \
+                className="note_text", id="note_text_1"),
+        report_section(),
         html.H1("Bitcoin (BTC) September 2023 Report", className="title_text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_1")
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_2")
     ])
+
 
 def key_insights():
     return html.Div([
@@ -361,7 +396,7 @@ def key_insights():
     ])
 
 # Inform Dash that this is a page
-dash.register_page(__name__, title='BTC September 2023 Report')
+dash.register_page(__name__, title='Home', path='/')
 
 # Modify the default index string's title
 index_string = '''

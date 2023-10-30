@@ -77,11 +77,6 @@ btc_90d_w_external = btc_90d_w_external.rename(columns={
     'Volume_gold': 'gold_volume'
 })
 
-# Create % difference
-btc_90d_w_external['btc_price_change'] = btc_90d_w_external['price'].pct_change() * 100
-btc_90d_w_external['ndx_price_change'] = btc_90d_w_external['ndx_price'].pct_change() * 100
-btc_90d_w_external['gold_price_change'] = btc_90d_w_external['gold_price'].pct_change() * 100
-
 # Remove the last row of the dataframe
 btc_90d_w_external = btc_90d_w_external.iloc[:-1]
 
