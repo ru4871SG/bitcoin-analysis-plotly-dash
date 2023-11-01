@@ -2,7 +2,7 @@
 
 body {
     background-color: #1e1e1e;
-    color: #34383d;
+    color: #FFFFFF !important;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -27,6 +27,11 @@ body {
     color: #FFFFFF !important;
     text-align: center !important;
 }
+
+.note_text a {
+    color: #add8e6 !important;
+}
+
 
 .dropdown-width {
     width: 100px !important; 
@@ -75,8 +80,35 @@ body {
     border-right: none;
     background-color: #2b2b2b;
     color: white;
-    padding: 10px;
+    padding: 5px;
     box-sizing: border-box;
+}
+
+.menu-container {
+    overflowX: scroll;
+    width: 90%;
+    margin: auto;
+    background-color: #2b2b2b;
+    padding: 5px 0;
+}
+
+.menu-link {
+    display: block;
+    color: white;
+    text-decoration: underline;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.menu-link:hover {
+    background-color: #3b3a3a;
+    color: #add8e6;
+}
+
+.home_top_link {
+    color: #add8e6;
 }
 
 #main-pane {

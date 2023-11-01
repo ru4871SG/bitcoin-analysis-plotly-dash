@@ -1,11 +1,10 @@
 """
-Data Import and Wrangling Steps - BNB
+ETL (Extract, Transform, Load) Script - BNB
 """
 
 # %%
 
 ## Libraries
-# import numpy as np
 import configparser
 import json
 import pandas as pd

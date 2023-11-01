@@ -1,7 +1,8 @@
-# import numpy as np
-import pandas as pd
-from sklearn.linear_model import LinearRegression
+"""
+Dash Page - Home
+"""
 
+### Import Libraries
 # import sidebar_menu from the main app.py
 from app import sidebar_menu
 
@@ -10,18 +11,23 @@ import app_layout.main_pane as main_pane
 
 import dash
 from dash import dcc, html
-# from dash.dependencies import Input, Output, State
+
+import pandas as pd
 
 import plotly.express as px
 import plotly.graph_objects as go
 
+from sklearn.linear_model import LinearRegression
+
+
 ### Import Data, better to import from pickle files, rather than importing the script directly
-btc_90d_w_external = pd.read_pickle('pickles/september_2023/btc_90d_w_external.pkl')
-mempool_stats_30d_grouped = pd.read_pickle('pickles/september_2023/mempool_stats_30d_grouped.pkl')
-btc_mining_pools = pd.read_pickle('pickles/september_2023/btc_mining_pools.pkl')
-btc_combined_data_final = pd.read_pickle('pickles/september_2023/btc_combined_data_final.pkl')
-spot_exchanges_volume = pd.read_pickle('pickles/september_2023/spot_exchanges_volume.pkl')
-lightning_mempool_total_capacity = pd.read_pickle('pickles/september_2023/lightning_mempool_total_capacity.pkl')
+btc_90d_w_external = pd.read_pickle('pickles/october_2023/btc_90d_w_external.pkl')
+mempool_stats_30d_grouped = pd.read_pickle('pickles/october_2023/mempool_stats_30d_grouped.pkl')
+btc_mining_pools = pd.read_pickle('pickles/october_2023/btc_mining_pools.pkl')
+btc_combined_data_final = pd.read_pickle('pickles/october_2023/btc_combined_data_final.pkl')
+spot_exchanges_volume = pd.read_pickle('pickles/october_2023/spot_exchanges_volume.pkl')
+lightning_mempool_total_capacity = pd.read_pickle('pickles/october_2023/lightning_mempool_total_capacity.pkl')
+
 
 ### Section 1: Define the Plots Using Plotly
 ## fig1: Bitcoin's Line Chart, with NDX and Gold (Normalized)
@@ -69,12 +75,12 @@ fig1_layout = go.Layout(
 
 fig1 = {"data": [fig1_trace1, fig1_trace2, fig1_trace3], "layout": fig1_layout}
 
-## fig2: Scatter Plot Between BTC vs. NDX and BTC vs. Gold (Normalized)
+## fig2: Scatter Plot Between BTC vs. NDX (Normalized)
 # Extract the month name from the 'Date' column and store it in a new 'Month' column
 btc_90d_w_external_and_months = btc_90d_w_external.copy()
 btc_90d_w_external_and_months['Month'] = btc_90d_w_external_and_months['Date'].dt.strftime('%B')
 
-# Compute linear regression line using sklearn
+# Compute linear regression line using sklearn (BTC vs. NDX)
 X = btc_90d_w_external_and_months["btc_price_normalized"].values.reshape(-1, 1)
 y = btc_90d_w_external_and_months["ndx_price_normalized"].values
 model = LinearRegression().fit(X, y)
@@ -88,7 +94,7 @@ fig2 = px.scatter(btc_90d_w_external_and_months, x='btc_price_normalized',
                   'ndx_price_normalized': 'NDX'}, 
                   title='BTC vs. NDX')
 
-# Add linear regression line (Trend Line) to fig2
+# Add linear regression line to fig2
 fig2.add_trace(go.Scatter(x=btc_90d_w_external_and_months["btc_price_normalized"], \
                           y=y_pred, mode='lines', name='Trend Line', line={'color': '#dfbd75'}))
 
@@ -116,6 +122,13 @@ fig2_layout.update(
 
 fig2 = {"data": fig2.data, "layout": fig2_layout}
 
+## fig2b: Scatter Plot Between BTC vs. Gold (Normalized)
+# Compute linear regression line for fig2b using sklearn (BTC vs. Gold)
+X_2b = btc_90d_w_external_and_months["btc_price_normalized"].values.reshape(-1, 1)
+y_2b = btc_90d_w_external_and_months["gold_price_normalized"].values
+model_2b = LinearRegression().fit(X_2b, y_2b)
+y_2b_pred = model_2b.predict(X_2b)
+
 # define fig2b - BTC vs Gold
 fig2b = px.scatter(btc_90d_w_external_and_months, x='btc_price_normalized',
                   y='gold_price_normalized',
@@ -124,9 +137,9 @@ fig2b = px.scatter(btc_90d_w_external_and_months, x='btc_price_normalized',
                   'gold_price_normalized': 'GOLD'}, 
                   title='BTC vs. GOLD')
 
-# Add linear regression line (Trend Line) to fig2b
+# Add linear regression line to fig2b
 fig2b.add_trace(go.Scatter(x=btc_90d_w_external_and_months["btc_price_normalized"], \
-                          y=y_pred, mode='lines', name='Trend Line', line={'color': '#dfbd75'}))
+                          y=y_2b_pred, mode='lines', name='Trend Line', line={'color': '#dfbd75'}))
 
 fig2b_layout = fig2b.layout
 
@@ -349,8 +362,8 @@ def report_section():
                 html.H3("Bitcoin", className="report_section_title"),
                 html.Img(src="assets/icons/btc.png", alt="Bitcoin", className="report_section_img"),
                 html.Ul([
-                    html.Li("October 2023"),
-                    html.Li(dcc.Link("September 2023", href="/btc-september-2023", style={'color': 'lightblue'}))
+                    html.Li(dcc.Link("October 2023", href="/btc-october-2023", className="home_top_link")),
+                    html.Li(dcc.Link("September 2023", href="/btc-september-2023", className="home_top_link"))
                 ], className="bullet_points")
             ], className="report_section_column"),
 
@@ -358,7 +371,7 @@ def report_section():
                 html.H3("Ethereum", className="report_section_title"),
                 html.Img(src="assets/icons/eth.png", alt="Ethereum", className="report_section_img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/eth-october-2023", style={'color': 'lightblue'}))
+                    html.Li(dcc.Link("October 2023", href="/eth-october-2023", className="home_top_link"))
                 ], className="bullet_points")
             ], className="report_section_column"),
 
@@ -366,7 +379,7 @@ def report_section():
                 html.H3("BNB", className="report_section_title"),
                 html.Img(src="assets/icons/bnb.png", alt="BNB", className="report_section_img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/bnb-october-2023", style={'color': 'lightblue'}))
+                    html.Li(dcc.Link("October 2023", href="/bnb-october-2023", className="home_top_link"))
                 ], className="bullet_points")
             ], className="report_section_column")
         ], className="report_section_row")
@@ -374,12 +387,14 @@ def report_section():
 
 def header():
     return html.Div([
-        html.H2("Monthly Cryptocurrency Analysis Report", className="title_text", id="title_text_1"),
-        html.H4(f"Choose a cryptocurrency analysis report (latest Bitcoin report shown by default)", \
-                className="note_text", id="note_text_1"),
-        report_section(),
-        html.H1("Bitcoin (BTC) September 2023 Report", className="title_text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_2")
+    html.H2("Cryptocurrency Analysis Reports", className="title_text", id="title_text_0"),
+    html.H4(html.A("Github Repo", href="https://github.com/ru4871SG/bitcoin-analysis-plotly-dash/", \
+        target="_blank"), className="note_text", id="note_text_0"),
+    html.H4(f"Choose a specific analysis report (latest Bitcoin report shown by default)", \
+        className="note_text", id="note_text_1"),
+    report_section(),
+    html.H1("Bitcoin (BTC) October 2023 Report", className="title_text", id="title_text_1"),
+    html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_2")
     ])
 
 
@@ -387,16 +402,19 @@ def key_insights():
     return html.Div([
         html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
         html.Ul([
-            html.Li("In Q3 2023, Bitcoin price action has not been tightly correlated to NDX or Gold"),
-            html.Li("In the month of September, Bitcoin median tx fee were usually low, peaked at 29 sat/vB"),
+            html.Li("In October 2023, Bitcoin price action has been doing much better than NDX and Gold"),
+            html.Li("Bitcoin has not been positively correlated with NDX, but it's still positively \
+                    correlated with Gold"),
             html.Li("Foundry USA and AntPool are still leading the mining pool distribution"),
-            html.Li("Binance is still leading the spot trading volume data, with peak activities around July 14th and August 18th"),
-            html.Li("Lightning Network stats have been stagnant in the past 3 months")
+            html.Li("Binance is still leading the spot trading volume data, with peak activities around \
+                    August 18th and October 24th"),
+            html.Li("There has been an inverse relationship between total capacity and channel count for \
+                    Lightning Network (LN) in the month of October")
         ], className="bullet_points", id="bullet_points_list"),
     ])
 
 # Inform Dash that this is a page
-dash.register_page(__name__, title='Home', path='/')
+dash.register_page(__name__, title='Cryptocurrency Analysis Reports Using Plotly and Dash', path='/')
 
 # Modify the default index string's title
 index_string = '''
@@ -404,7 +422,7 @@ index_string = '''
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Bitcoin September 2023 Report</title>
+        <title>Bitcoin October 2023 Report</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {%css%}
     </head>
@@ -425,56 +443,56 @@ layout = html.Div([
     main_pane.generate(
         header(),
         key_insights(),
-        (fig1, "Bitcoin Price Action vs. NDX and Gold", "The above chart normalized the starting prices of the three objects (BTC, NDX, and \
-                    Gold) to make it easier to see their correlation. As you can see in the above chart, \
-                    Bitcoin has been underperforming from early July to end of September compared to Nasdaq-100 (NDX) and Gold. \
-                    On August 16th, Bitcoin suffered a heavy bearish pressure, and it never \
-                    really recovered ever since. Meanwhile, NDX and Gold have been much more \
-                    stable compared to Bitcoin. It remains to be seen whether Bitcoin price action \
-                    will eventually follow NDX or Gold again"),
+        (fig1, "Bitcoin Price Action vs. NDX and Gold", "The above chart normalized the starting prices of the three assets \
+            (BTC, NDX, and Gold) to check their price actions' correlation over the past 3 months. As depicted in the chart, \
+            from mid-August to late September, Bitcoin underperformed compared to Nasdaq-100 (NDX) and Gold. However, \
+            starting October, Bitcoin exhibited a sharp uptrend, significantly outpacing both NDX and Gold. The sharp uptrend \
+            was primarily driven by speculation and optimism over the potential approval of a Bitcoin spot exchange-traded \
+            fund (ETF) in the United States. Anyway, BTC/Gold seems to be more correlated as compared to BTC/NDX."),
 
-        (fig2, "Correlation Analysis: Bitcoin vs. NDX", "My second analysis uses EDA (Exploratory Data Analysis) with a scatter plot to \
-                    check the correlation between Bitcoin vs. NDX. The scatter plot show moderate correlation, \
-                    although they are not tightly correlated. I have also included the linear regression (trend) line, \
-                    so you can check the consistencies of the data points against the trend line. You can see there are a \
-                    lot of data points that are far away from the trend line. This finding indicates a lot of variability. \
-                    That means Bitcoin price action (between July and September) did not closely follow the price action of NDX."),
+        (fig2, "Correlation Analysis: Bitcoin vs. NDX", "My second analysis utilizes EDA (Exploratory Data Analysis) with a \
+            scatter plot to evaluate the correlation between Bitcoin and NDX. From the scatter plot, one can observe a \
+            descending trend, suggesting an inverse correlation between Bitcoin and NDX over the given period. The linear \
+            regression line further emphasizes this inverse relationship. Notably, data points from October are more \
+            dispersed from the trend line than those from August and September, indicating greater variability during \
+            that month. This suggests that the price action of Bitcoin in October deviated more significantly from the \
+            trend of NDX."),
 
-        (fig2b, "Correlation Analysis: Bitcoin vs. Gold", "The third analysis is similar to the previous analysis but it \
-                    uses gold price as the y-axis while the x-axis remains the same. Just like the previous scatter plot, this one also \
-                    shows moderate correlation between the x-axis (Bitcoin) and y-axis (Gold)."),       
+        (fig2b, "Correlation Analysis: Bitcoin vs. Gold", "The third analysis is using a scatter plot, just like the \
+            previous analysis but it uses gold price as the y-axis while the x-axis remains BTC. This scatter plot \
+            highlights a rising trend, pointing to a direct correlation between the two over the analyzed period. \
+            The linear regression line further corroborates this positive relationship. Noteworthy is the distribution \
+            of data points; those from August and September cluster more closely to the trend line, while October's \
+            points are more scattered, indicating a heightened variability in that month."),
 
-        (fig3, "Bitcoin Block Analysis - Median Tx Fee", "Now, let's check the Bitcoin block data directly from mempool to see the median \
-                    transaction (tx) fee for the past 30 days. I used mempool's data because it is a \
-                    widely trusted blockchain explorer in the Bitcoin community. Looks like the median \
-                    tx fees have not fluctuated much in the past 30 days. Around September 19th (end of \
-                    the block height 808519), the median transaction fee peaked at 29 sat/vB, but it's \
-                    been trending down ever since, signaling a lack of trading activities in the Bitcoin \
-                    blockchain. To analyze the median tx fee, I grouped every 144 blocks into just one \
-                    block group. On average, Bitcoin mines 144 blocks per day."),
+        (fig3, "Bitcoin Block Analysis - Median Tx Fee", "Turning our attention to the Bitcoin block data sourced directly \
+            from the mempool, we delve into the median transaction (tx) fee trends over the past 30 blocks, which can be \
+            approximated as a month if considering 144 blocks per day. The bar chart provides insights into the median tx fee \
+            trajectory. It's evident that there's been noticeable variability in the median tx fees over the considered \
+            timeframe. For block height group 23, the median transaction fee spiked, with 27 sat/vB. However, post this \
+            surge, there's been a decline in fees. To facilitate a more streamlined analysis, the data is presented in \
+            block groups, each representing 144 blocks. This grouping is based on Bitcoin's average mining rate of 144 \
+            blocks daily."),
 
-        (fig4, "Bitcoin Mining Pools", "This section analyzes Bitcoin mining pools' distribution from mempool. Foundry \
-                    USA and AntPool are still leading the distribution, with F2Pool, ViaBTC, \
-                    and BinancePool following behind them closely. The mining pools' distribution \
-                    in the Bitcoin network is well diversified, as you can see from the pie chart \
-                    above, and it's much more decentralized than most altcoins in the \
-                    cryptocurrency industry."),
+        (fig4, "Bitcoin Mining Pools", "This section analyzes Bitcoin mining pools' distribution from mempool. Just like \
+            in the previous month, Foundry USA and AntPool are still leading the distribution, with F2Pool, ViaBTC, \
+            and BinancePool following behind them closely. The mining pools' distribution in the Bitcoin network is well \
+            diversified, as you can see from the pie chart above. Interestingly, smaller pools like MARA and LUXOR \
+            have also carved out their niche in the network. It's essential to monitor these distributions regularly as \
+            shifts in mining power can influence the overall security and decentralization of the Bitcoin network"),
 
-        (fig5, "Spot Exchanges Volume Data", "Let's check the cryptocurrency spot exchanges' volume data. I decided to check \
-                    spot exchanges' volume data because they represent how active the cryptocurrency market \
-                    is. Spot trading volume data is also more accurate regarding actual market activity. \
-                    The above chart shows that Binance still dominates the market as always, \
-                    with peak activities around July 14th and August 18th. Even in the last days of September, Binance's \
-                    trading volume still surpassed 133K Bitcoin per day. These details are essential because \
-                    they show that there are still a lot of crypto day traders, even in the bear market."),
+        (fig5, "Spot Exchanges Volume Data", "Let's check the cryptocurrency spot exchanges' volume data. \
+            The above chart shows that Binance still dominates the market as always, with peak activities around August \
+            18th and October 24th. The activities around October 24th makes a lot of sense considering the sharp uptrend \
+            of Bitcoin price action around that time. While Binance leads the pack, other exchanges like Coinbase and \
+            Kraken maintain consistent trading volumes throughout the period. It's noteworthy that despite the dominance \
+            of Binance, the market landscape remains competitive with different exchanges vying for a significant share \
+            of the trading volume."),
 
-        (fig6, "Lightning Network (LN) Data", "Now, let's analyze the Lightning Network (LN) data. Many cryptocurrency advocates \
-                    believe that LN will have to be widely adopted sooner or later if we want to see Bitcoin's \
-                    mainstream adoption due to its much lower fees. When it comes to LN, the more capacity \
-                    the network has, the more value it can transfer at any given time without needing to \
-                    open new channels. As for channel count, a higher channel count suggests a more \
-                    interconnected and potentially more decentralized network. Unfortunately, \
-                    both numbers have not changed much. These numbers may potentially change \
-                    in the bull market, though.")  
+        (fig6, "Lightning Network (LN) Data", "Now, let's analyze the Lightning Network (LN) data. When it comes to LN, \
+            the more capacity the network has, the more value it can transfer at any given time without needing to \
+            open new channels. As for channel count, a higher channel count suggests a more interconnected and \
+            potentially more decentralized network. Looks like there has been an inverse relationship between the two \
+            in the month of October.")
     )
 ], id='main-container')

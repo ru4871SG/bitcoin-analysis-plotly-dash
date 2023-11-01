@@ -1,7 +1,8 @@
-# import numpy as np
-import pandas as pd
-# from sklearn.linear_model import LinearRegression
+"""
+Dash Page - ETH October 2023 Report
+"""
 
+### Import Libraries
 # import sidebar_menu from the main app.py
 from app import sidebar_menu
 
@@ -10,10 +11,12 @@ import app_layout.main_pane as main_pane
 
 import dash
 from dash import html
-# from dash.dependencies import Input, Output, State
+
+import pandas as pd
 
 import plotly.express as px
 import plotly.graph_objects as go
+
 
 ### Import Data, better to import from pickle files, rather than importing the script directly
 eth_90d = pd.read_pickle('pickles/october_2023/eth_90d.pkl')
@@ -24,7 +27,7 @@ eth_defi_tvl_top10 = pd.read_pickle('pickles/october_2023/eth_defi_tvl_top10.pkl
 
 
 ### Section 1: Define the Plots Using Plotly
-## fig1: Ethereum's Price vs. Bitcoin
+## fig1: ETH Price vs. USD and Bitcoin
 min_date = min(eth_90d['Date'])
 max_date = max(eth_90d['Date'])
 
@@ -104,11 +107,13 @@ def key_insights():
     return html.Div([
         html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
         html.Ul([
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod")
+            html.Li("ETH has been following the uptrend of BTC against USD in October, but it has been \
+                    underperforming against BTC"),
+            html.Li("ETH gas fees have been volatile, with a sharp increase observed around October 31st"),
+            html.Li("Ethereum historical TVL data has been on a downtrend since its peak in November 2021. \
+                    In the recent months, the TVL appeared to stabilize"),
+            html.Li("Among top 10 DeFi protocols, Lido still dominates the TVL comparison, followed by Aave \
+                    and MakerDAO")
         ], className="bullet_points", id="bullet_points_list"),
     ])
 
@@ -185,7 +190,7 @@ for idx, defi_name in enumerate(eth_defi_protocol_list_names):
 
 fig4_layout = go.Layout(
     height=400,
-    title='Ethereum Top 10 DeFi - TVL Comparison (Past 3 Years)',
+    title='Ethereum Top 10 DeFi - Historical TVL Comparison',
     titlefont={'color': 'white'},
     title_x=0.05,
     yaxis={
@@ -237,9 +242,30 @@ layout = html.Div([
     main_pane.generate(
         header(),
         key_insights(),
-        (fig1, "ETH Price Action vs. USD and BTC", "Description for fig1..."),
-        (fig2, "Ethereum Gas Fees in GWEI", "Description for fig2..."),
-        (fig3, "Ethereum TVL Historical Data (Past 3 Years)", "Description for fig1..."),
-        (fig4, "Ethereum Top 10 DeFi - TVL Comparison (Past 3 Years)", "Description for fig2...")
+        (fig1, "ETH Price Action vs. USD and BTC", "The chart above normalizes the starting prices of the two pairs \
+            (ETH/USD and ETH/BTC) to assess their relative price actions over the past couple of months. \
+            From the visualization, we can infer that from mid-August to late September, Ethereum (ETH) slightly \
+            underperformed against USD. Things started to change in the month of October, where ETH has been \
+            doing well, following BTC's sharp uptrend against USD. Compared to BTC, however, ETH has been underperforming."),
+
+        (fig2, "Ethereum Gas Fees in GWEI", "Shifting our focus to Ethereum's network data sourced from Owlracle, we \
+            explore the average gas fee trends in the month of October. The bar chart paints a picture of the average gas \
+            fee progression. There's a clear display of volatility in the gas fees throughout the observed duration. \
+            Specifically, around October 31st, the average gas price surged, reaching as high as 19 GWEI. This \
+            representation gives us insights into Ethereum's transactional cost fluctuations over this short yet \
+            insightful span."),
+
+        (fig3, "Ethereum TVL Historical Data (Past 3 Years)", "Diving into Ethereum's on-chain metrics from DefiLlama \
+            over the past three years, the line chart elucidates the trajectory of Ethereum's Total Value Locked (TVL). \
+            Starting from November 2020, there was a pronounced climb in TVL, indicating increased activity and trust in \
+            the Ethereum ecosystem. By November 2021, Ethereum's TVL reached its peak. This robust growth, however, \
+            began to taper post its peak, with a considerable pullback observed as we transitioned into 2023. In the recent \
+            months, the TVL appeared to stabilize, showcasing a period of consolidation in the network's value."),
+
+        (fig4, "Ethereum Top 10 DeFi - Historical TVL Comparison", "The last chart shows the TVL comparison among the top \
+            DeFi protocols in the Ethereum chain. It is obvious that these projects exhibit distinct trajectories, \
+            reflecting their individual dynamisms and market sentiments. Lido still dominates the TVL comparison, \
+            followed by Aave and MakerDAO. The rest of the protocols are trailing behind. Interestingly, Lido TVL has \
+            been steadily increasing, while Aave and MakerDAO's TVL have been on a downtrend.")
     )
 ], id='main-container')

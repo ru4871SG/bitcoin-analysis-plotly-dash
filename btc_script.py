@@ -1,11 +1,10 @@
 """
-Data Import and Wrangling Steps - Bitcoin
+ETL (Extract, Transform, Load) Script - Bitcoin
 """
 
 # %%
 
 ## Libraries
-# import numpy as np
 import json
 import pandas as pd
 import requests
@@ -106,7 +105,7 @@ def get_latest_block_number():
 block_number = get_latest_block_number()
 
 
-for _ in range(1):  # outer loop for n iterations - change this to 864 for 90 days of data
+for _ in range(288):  # outer loop for n iterations - change this to 864 for 90 days of data
     for _ in range(15):  # inner loop to get 15 blocks
         # Create URL
         url = f"https://mempool.space/api/v1/blocks/{block_number}"

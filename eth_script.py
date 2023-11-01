@@ -1,11 +1,10 @@
 """
-Data Import and Wrangling Steps - Ethereum
+ETL (Extract, Transform, Load) Script - Ethereum
 """
 
 # %%
 
 ## Libraries
-# import numpy as np
 import configparser
 import json
 import pandas as pd

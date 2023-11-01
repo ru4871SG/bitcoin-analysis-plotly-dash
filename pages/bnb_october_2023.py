@@ -1,7 +1,8 @@
-# import numpy as np
-import pandas as pd
-# from sklearn.linear_model import LinearRegression
+"""
+Dash Page - BNB October 2023 Report
+"""
 
+### Import Libraries
 # import sidebar_menu from the main app.py
 from app import sidebar_menu
 
@@ -10,10 +11,12 @@ import app_layout.main_pane as main_pane
 
 import dash
 from dash import html
-# from dash.dependencies import Input, Output, State
+
+import pandas as pd
 
 import plotly.express as px
 import plotly.graph_objects as go
+
 
 ### Import Data, better to import from pickle files, rather than importing the script directly
 bnb_90d = pd.read_pickle('pickles/october_2023/bnb_90d.pkl')
@@ -24,7 +27,7 @@ bnb_defi_tvl_top10 = pd.read_pickle('pickles/october_2023/bnb_defi_tvl_top10.pkl
 
 
 ### Section 1: Define the Plots Using Plotly
-## fig1: BNB's Price vs. Bitcoin
+## fig1: BNB Price vs. USD and Bitcoin
 min_date = min(bnb_90d['Date'])
 max_date = max(bnb_90d['Date'])
 
@@ -104,11 +107,12 @@ def key_insights():
     return html.Div([
         html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
         html.Ul([
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod"),
-            html.Li("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod")
+            html.Li("Just like the other top altcoins, BNB has been following the uptrend of BTC against \
+                    USD in the month of October"),
+            html.Li("However, BNB has been underperforming against BTC"),
+            html.Li("Binance Smart Chain (BSC) TVL data has been declining in the past 2 years"),
+            html.Li("Among top BSC DeFi protocols, PancakeSwap still dominates the TVL number, way above \
+                    the other protocols")
         ], className="bullet_points", id="bullet_points_list"),
     ])
 
@@ -186,7 +190,7 @@ for idx, defi_name in enumerate(bnb_defi_protocol_list_names):
 
 fig4_layout = go.Layout(
     height=400,
-    title='Binance (BSC) Top 10 DeFi - TVL Comparison (Past 3 Years)',
+    title='Binance (BSC) Top 10 DeFi - Historical TVL Comparison',
     titlefont={'color': 'white'},
     title_x=0.05,
     yaxis={
@@ -238,9 +242,28 @@ layout = html.Div([
     main_pane.generate(
         header(),
         key_insights(),
-        (fig1, "BNB Price Action vs. USD and BTC", "Description for fig1..."),
-        (fig2, "BNB Gas Fees in GWEI", "Description for fig2..."),
-        (fig3, "BSC TVL Historical Data (Past 3 Years)", "Description for fig1..."),
-        (fig4, "Binance (BSC) Top 10 DeFi - TVL Comparison (Past 3 Years)", "Description for fig2...")
+        (fig1, "BNB Price Action vs. USD and BTC", "The chart above normalizes the starting prices of the two pairs \
+            (BNB/USD and BNB/BTC) to assess their relative price actions over the past couple of months. From the \
+            visualization, we can infer that from mid-August to late September, Binance Coin (BNB) underperformed \
+            against USD. Starting in October, however, BNB exhibited a noticeable increase against USD - following \
+            BTC's sharp increase against USD. Unfortunately, BNB has generally underperformed against BTC, \
+            especially in the latter half of October."),
+
+        (fig2, "BSC Gas Fees in GWEI", "Shifting our focus to Binance Smart Chain's network data from Owlracle, \
+            we explore the average gas fee trends in the month of October. The bar chart paints a picture of the \
+            average gas fee progression. I do not see much volatility in the gas fees throughout the observed duration. \
+            They just fluctuate between 1-3 GWEI."),
+
+        (fig3, "BSC TVL Historical Data (Past 3 Years)", "Diving into Binance Smart Chain's on-chain metrics from \
+            DeFiLlama over the past three years, the line chart shows BSC's TVL historical data. From November 2020, \
+            there was a significant climb in TVL up to May 2021. This robust ascent, however, began to wane because of \
+            the bear market, with a considerable pullback in the past two years. This decline has been slowing down \
+            recently, but it doesn't show any signs of recovery yet."),
+
+        (fig4, "BSC Top 10 DeFi - Historical TVL Comparison", "The final chart shows the TVL comparison among the top \
+            DeFi protocols in BSC. PancakeSwap still dominates the TVL number in BSC, with over $1.3B locked in the \
+            protocol. Venus and CoinWind are the second and third largest DeFi protocols in the BSC, but their TVL \
+            numbers are significantly lower than PancakeSwap. Most of the DeFi protocols in the BSC have shown \
+            signs of decline.")
     )
 ], id='main-container')

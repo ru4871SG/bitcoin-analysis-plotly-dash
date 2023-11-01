@@ -1,12 +1,24 @@
-# import numpy as np
-import pandas as pd
-from sklearn.linear_model import LinearRegression
+"""
+Dash App
+"""
 
+### Import Libraries
 # app_layout package
 import app_layout.sidebar as sidebar
 
 import dash
 from dash import Dash, dcc, html
+
+
+def format_title(words):
+    if words == "Home":
+        return words
+
+    word = words.split()
+    if len(word) > 0:
+        word[0] = word[0].upper()
+        word[1] = word[1].title()
+    return " ".join(word)
 
 
 def sidebar_menu(data_table):
@@ -15,38 +27,13 @@ def sidebar_menu(data_table):
         # Links
         html.Div([
             # Internal Pages
-            html.Div(
-                dcc.Link(f"{page['name'].title()}", href=page["relative_path"], style={'color': 'lightblue'}),
-                style={
-                    'backgroundColor': '#2b2b2b',
-                    'color': 'white',
-                    'border': '1px solid #ccc',
-                    'padding': '10px',
-                    'margin': '10px 0',
-                    'width': '90%',
-                    'textAlign': 'left'
-                }
+            dcc.Link(
+                format_title(page['name']),
+                href=page["relative_path"],
+                className='menu-link'
             ) for page in dash.page_registry.values()
-        ] + [
-            # External Links to External Websites (Example)
-            html.Div([
-                html.A("Coingecko", href="https://www.coingecko.com", target="_blank", style={'color': 'lightblue'}),
-            ], style={
-                'backgroundColor': '#2b2b2b',
-                'color': 'white',
-                'border': '1px solid #ccc',
-                'padding': '10px',
-                'margin': '10px 0',
-                'width': '90%',
-                'textAlign': 'left'
-            })
-        ], style={
-            'overflowX': 'scroll',
-            'border': '1px solid #ccc',
-            'width': '90%',
-            'margin': 'auto',
-            'backgroundColor': '#3d3d3d'
-        }),
+        ]
+        , className='menu-container'),
 
         # Data Table
         html.H3('Data Table'),
@@ -54,17 +41,16 @@ def sidebar_menu(data_table):
     ], id='sidebar')
 
 
-# Use Multiple Pages
+# Use Multi-Pages
 app = Dash(__name__, use_pages=True)
 
 app.layout = html.Div([
     dash.page_container
 ])
 
-# Run the App
+# Run the App - use the first two lines below for local testing
+# if __name__ == '__main__':
+#     app.run_server(debug=True, dev_tools_hot_reload=False)
+
 if __name__ == '__main__':
-    app.run_server(debug=True, dev_tools_hot_reload=False)
-
-
-### NOT YET:
-# 3. customize the homepage and sidebar
+    app.run_server(debug=True, dev_tools_hot_reload=False, host='0.0.0.0', port=10000)
