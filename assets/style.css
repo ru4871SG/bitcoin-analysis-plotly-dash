@@ -2,7 +2,7 @@
 
 body {
     background-color: #1e1e1e;
-    color: #34383d;
+    color: #FFFFFF !important;
     margin: 0;
     padding: 0;
     width: 100%;
@@ -15,11 +15,6 @@ body {
     text-align: center !important;
 }
 
-.author_text {
-    color: #FFFFFF !important;
-    text-align: center !important;
-}
-
 .heading_text {
     color: #FFFFFF !important;
 }
@@ -28,10 +23,15 @@ body {
     color: #FFFFFF !important;
 }
 
-.citation_text {
+.note_text {
     color: #FFFFFF !important;
-    font-size: 12px !important;
+    text-align: center !important;
 }
+
+.note_text a {
+    color: #add8e6 !important;
+}
+
 
 .dropdown-width {
     width: 100px !important; 
@@ -55,6 +55,20 @@ body {
     justify-content: stretch;
 }
 
+.bullet_points {
+    list-style-type: disc;  
+    padding-left: 20px;     
+    margin-top: 10px;       
+    margin-bottom: 10px;    
+    line-height: 1.5;       
+    font-size: 15px !important;
+    color: #FFFFFF !important;        
+}
+
+.bullet_points li {
+    margin-bottom: 5px;
+}
+
 #main-container {
     display: flex;
     flex-direction: column;
@@ -66,37 +80,45 @@ body {
     border-right: none;
     background-color: #2b2b2b;
     color: white;
-    padding: 10px;
+    padding: 5px;
     box-sizing: border-box;
+}
+
+.menu-container {
+    overflowX: scroll;
+    width: 90%;
+    margin: auto;
+    background-color: #2b2b2b;
+    padding: 5px 0;
+}
+
+.menu-link {
+    display: block;
+    color: white;
+    text-decoration: underline;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.menu-link:hover {
+    background-color: #3b3a3a;
+    color: #add8e6;
+}
+
+.home_top_link {
+    color: #add8e6;
 }
 
 #main-pane {
     width: 100%;
-    padding: 10px;
+    padding: 30px;
     box-sizing: border-box;
 }
 
-.bullet_points {
-    list-style-type: disc;  
-    padding-left: 20px;     
-    margin-top: 10px;       
-    margin-bottom: 10px;    
-    line-height: 1.5;       
-    font-size: 14px !important;
-    color: #ffffff !important;        
-}
-
-.repo_link {
-    color: #4c74e3 !important;  
-}
-
-.bullet_points li {
-    margin-bottom: 5px;     /* Add some space below each list item */
-}
-
-
 /*
-Mobile and Tablet Layouts - change them here
+Desktop Layout
 */
 @media screen and (min-width: 768px) {
     #main-container {
@@ -121,4 +143,43 @@ Mobile and Tablet Layouts - change them here
     border-radius: 5px !important;
     margin-bottom: 20px !important;
     padding: 10px !important;
+}
+
+/* Overall styling for the report section (Home) */
+.report_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.report_section_row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.report_section_column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin: 0 10px;
+    border-radius: 5px;
+}
+
+.report_section_title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #FFFFFF !important;
+}
+
+.report_section_img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
 }
