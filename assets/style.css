@@ -187,7 +187,6 @@ Desktop Layout
         margin-bottom: 10px;
     }
     .report-section__row {
-        flex-direction: row;
         justify-content: space-between;
         max-width: 1200px;
     }
