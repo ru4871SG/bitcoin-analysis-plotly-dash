@@ -362,8 +362,8 @@ def report_section():
                 html.H3("Bitcoin", className="report-section__title"),
                 html.Img(src="assets/icons/btc.png", alt="Bitcoin", className="report-section__img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/btc-october-2023", className="home-top-link")),
-                    html.Li(dcc.Link("September 2023", href="/btc-september-2023", className="home-top-link"))
+                    html.Li(dcc.Link("October", href="/btc-october-2023", className="home-top-link")),
+                    html.Li(dcc.Link("September", href="/btc-september-2023", className="home-top-link"))
                 ], className="bullet_points")
             ], className="report-section__column"),
 
@@ -371,7 +371,7 @@ def report_section():
                 html.H3("Ethereum", className="report-section__title"),
                 html.Img(src="assets/icons/eth.png", alt="Ethereum", className="report-section__img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/eth-october-2023", className="home-top-link"))
+                    html.Li(dcc.Link("October", href="/eth-october-2023", className="home-top-link"))
                 ], className="bullet_points")
             ], className="report-section__column"),
 
@@ -379,7 +379,7 @@ def report_section():
                 html.H3("BNB", className="report-section__title"),
                 html.Img(src="assets/icons/bnb.png", alt="BNB", className="report-section__img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/bnb-october-2023", className="home-top-link"))
+                    html.Li(dcc.Link("October", href="/bnb-october-2023", className="home-top-link"))
                 ], className="bullet_points")
             ], className="report-section__column")
         ], className="report-section__row")
