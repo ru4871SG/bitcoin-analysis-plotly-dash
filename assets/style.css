@@ -10,25 +10,25 @@ body {
     font-weight: 100;
 }
 
-.title_text {
+.title-text {
     color: #FFFFFF !important;
     text-align: center !important;
 }
 
-.heading_text {
+.heading-text {
     color: #FFFFFF !important;
 }
 
-.paragraph_text {
+.paragraph-text {
     color: #FFFFFF !important;
 }
 
-.note_text {
+.note-text {
     color: #FFFFFF !important;
     text-align: center !important;
 }
 
-.note_text a {
+.note-text a {
     color: #add8e6 !important;
 }
 
@@ -55,7 +55,7 @@ body {
     justify-content: stretch;
 }
 
-.bullet_points {
+.bullet-points {
     list-style-type: disc;  
     padding-left: 20px;     
     margin-top: 10px;       
@@ -65,7 +65,7 @@ body {
     color: #FFFFFF !important;        
 }
 
-.bullet_points li {
+.bullet-points li {
     margin-bottom: 5px;
 }
 
@@ -107,7 +107,7 @@ body {
     color: #add8e6;
 }
 
-.home_top_link {
+.home-top-link {
     color: #add8e6;
 }
 
@@ -146,21 +146,21 @@ Desktop Layout
 }
 
 /* Overall styling for the report section (Home) */
-.report_section {
+.report-section {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
 }
 
-.report_section_row {
+.report-section__row {
     display: flex;
     justify-content: space-between;
     width: 100%;
     max-width: 1200px;
 }
 
-.report_section_column {
+.report-section__column {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -171,14 +171,14 @@ Desktop Layout
     border-radius: 5px;
 }
 
-.report_section_title {
+.report-section__title {
     font-size: 20px;
     font-weight: bold;
     margin-bottom: 10px;
     color: #FFFFFF !important;
 }
 
-.report_section_img {
+.report-section__img {
     width: 80px;
     height: 80px;
     margin-bottom: 10px;

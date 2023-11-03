@@ -359,48 +359,46 @@ def report_section():
     return html.Div([
         html.Div([
             html.Div([
-                html.H3("Bitcoin", className="report_section_title"),
-                html.Img(src="assets/icons/btc.png", alt="Bitcoin", className="report_section_img"),
+                html.H3("Bitcoin", className="report-section__title"),
+                html.Img(src="assets/icons/btc.png", alt="Bitcoin", className="report-section__img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/btc-october-2023", className="home_top_link")),
-                    html.Li(dcc.Link("September 2023", href="/btc-september-2023", className="home_top_link"))
+                    html.Li(dcc.Link("October 2023", href="/btc-october-2023", className="home-top-link")),
+                    html.Li(dcc.Link("September 2023", href="/btc-september-2023", className="home-top-link"))
                 ], className="bullet_points")
-            ], className="report_section_column"),
+            ], className="report-section__column"),
 
             html.Div([
-                html.H3("Ethereum", className="report_section_title"),
-                html.Img(src="assets/icons/eth.png", alt="Ethereum", className="report_section_img"),
+                html.H3("Ethereum", className="report-section__title"),
+                html.Img(src="assets/icons/eth.png", alt="Ethereum", className="report-section__img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/eth-october-2023", className="home_top_link"))
+                    html.Li(dcc.Link("October 2023", href="/eth-october-2023", className="home-top-link"))
                 ], className="bullet_points")
-            ], className="report_section_column"),
+            ], className="report-section__column"),
 
             html.Div([
-                html.H3("BNB", className="report_section_title"),
-                html.Img(src="assets/icons/bnb.png", alt="BNB", className="report_section_img"),
+                html.H3("BNB", className="report-section__title"),
+                html.Img(src="assets/icons/bnb.png", alt="BNB", className="report-section__img"),
                 html.Ul([
-                    html.Li(dcc.Link("October 2023", href="/bnb-october-2023", className="home_top_link"))
+                    html.Li(dcc.Link("October 2023", href="/bnb-october-2023", className="home-top-link"))
                 ], className="bullet_points")
-            ], className="report_section_column")
-        ], className="report_section_row")
-    ], className="report_section")
+            ], className="report-section__column")
+        ], className="report-section__row")
+    ], className="report-section")
 
 def header():
     return html.Div([
-    html.H2("Cryptocurrency Analysis Reports", className="title_text", id="title_text_0"),
-    html.H4(html.A("Github Repo", href="https://github.com/ru4871SG/bitcoin-analysis-plotly-dash/", \
-        target="_blank"), className="note_text", id="note_text_0"),
+    html.H2("Cryptocurrency Analysis Reports", className="title-text", id="title_text_0"),
     html.H4(f"Choose a specific analysis report (latest Bitcoin report shown by default)", \
-        className="note_text", id="note_text_1"),
+        className="note-text", id="note_text_1"),
     report_section(),
-    html.H1("Bitcoin (BTC) October 2023 Report", className="title_text", id="title_text_1"),
-    html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_2")
+    html.H1("Bitcoin (BTC) October 2023 Report", className="title-text", id="title_text_1"),
+    html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_2")
     ])
 
 
 def key_insights():
     return html.Div([
-        html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
+        html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("In October 2023, Bitcoin price action has been doing much better than NDX and Gold"),
             html.Li("Bitcoin has not been positively correlated with NDX, but it's still positively \

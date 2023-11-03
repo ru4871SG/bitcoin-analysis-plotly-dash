@@ -99,13 +99,13 @@ fig2.update_layout(
 
 def header():
     return html.Div([
-        html.H1("Ethereum (ETH) October 2023 Report", className="title_text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_1")
+        html.H1("Ethereum (ETH) October 2023 Report", className="title-text", id="title_text_1"),
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1")
     ])
 
 def key_insights():
     return html.Div([
-        html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
+        html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("ETH has been following the uptrend of BTC against USD in October, but it has been \
                     underperforming against BTC"),
@@ -114,7 +114,7 @@ def key_insights():
                     In the recent months, the TVL appeared to stabilize"),
             html.Li("Among top 10 DeFi protocols, Lido still dominates the TVL comparison, followed by Aave \
                     and MakerDAO")
-        ], className="bullet_points", id="bullet_points_list"),
+        ], className="bullet-points", id="bullet_points_list"),
     ])
 
 ## fig3: Ethereum TVL historical data

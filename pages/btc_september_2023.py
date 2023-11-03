@@ -356,20 +356,20 @@ fig6 = go.Figure(data=[trace1, trace2], layout=layout_fig6)
 ### Section 2: Define the App Layout and Texts
 def header():
     return html.Div([
-        html.H1("Bitcoin (BTC) September 2023 Report", className="title_text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_1")
+        html.H1("Bitcoin (BTC) September 2023 Report", className="title-text", id="title_text_1"),
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1")
     ])
 
 def key_insights():
     return html.Div([
-        html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
+        html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("In Q3 2023, Bitcoin price action has not been tightly correlated to NDX or Gold"),
             html.Li("In the month of September, Bitcoin median tx fee were usually low, peaked at 29 sat/vB"),
             html.Li("Foundry USA and AntPool are still leading the mining pool distribution"),
             html.Li("Binance is still leading the spot trading volume data, with peak activities around July 14th and August 18th"),
             html.Li("Lightning Network stats have been stagnant in the past 3 months")
-        ], className="bullet_points", id="bullet_points_list"),
+        ], className="bullet-points", id="bullet_points_list"),
     ])
 
 # Inform Dash that this is a page
