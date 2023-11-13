@@ -99,13 +99,13 @@ fig2.update_layout(
 
 def header():
     return html.Div([
-        html.H1("BNB October 2023 Report", className="title_text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note_text", id="note_text_1")
+        html.H1("BNB October 2023 Report", className="title-text", id="title_text_1"),
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1")
     ])
 
 def key_insights():
     return html.Div([
-        html.H3("Key Insights:", className="heading_text", id="key_insight_heading"),
+        html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("Just like the other top altcoins, BNB has been following the uptrend of BTC against \
                     USD in the month of October"),
@@ -113,7 +113,7 @@ def key_insights():
             html.Li("Binance Smart Chain (BSC) TVL data has been declining in the past 2 years"),
             html.Li("Among top BSC DeFi protocols, PancakeSwap still dominates the TVL number, way above \
                     the other protocols")
-        ], className="bullet_points", id="bullet_points_list"),
+        ], className="bullet-points", id="bullet_points_list"),
     ])
 
 ## fig3: BNB TVL historical data
