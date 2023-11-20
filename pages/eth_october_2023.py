@@ -238,7 +238,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(eth_combined_data_final),
+    sidebar_menu(eth_combined_data_final, 'ETH Data - End of Oct 2023'),
     main_pane.generate(
         header(),
         key_insights(),

@@ -398,7 +398,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(btc_combined_data_final),
+    sidebar_menu(btc_combined_data_final, 'BTC Data - End of Sep 2023'),
     main_pane.generate(
         header(),
         key_insights(),

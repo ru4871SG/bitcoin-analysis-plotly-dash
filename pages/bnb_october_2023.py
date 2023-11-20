@@ -238,7 +238,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(bnb_combined_data_final),
+    sidebar_menu(bnb_combined_data_final, 'BNB Data - End of Oct 2023'),
     main_pane.generate(
         header(),
         key_insights(),

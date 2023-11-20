@@ -21,7 +21,7 @@ def format_title(words):
     return " ".join(word)
 
 
-def sidebar_menu(data_table):
+def sidebar_menu(data_table, table_title):
     return html.Div([
         html.H3('Explore'),
         # Links
@@ -36,13 +36,13 @@ def sidebar_menu(data_table):
         , className='menu-container'),
 
         # Data Table
-        html.H3('Data Table'),
-        sidebar.generate(data_table)
+        sidebar.generate(data_table, table_title)
     ], id='sidebar')
 
 
 # Use Multi-Pages
 app = Dash(__name__, use_pages=True)
+app.title = "Deftify Monthly Cryptocurrency Analysis"
 
 app.layout = html.Div([
     dash.page_container

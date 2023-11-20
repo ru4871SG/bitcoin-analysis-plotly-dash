@@ -412,7 +412,7 @@ def key_insights():
     ])
 
 # Inform Dash that this is a page
-dash.register_page(__name__, title='Cryptocurrency Analysis Reports Using Plotly and Dash', path='/')
+dash.register_page(__name__, title='Deftify Monthly Cryptocurrency Analysis', path='/')
 
 # Modify the default index string's title
 index_string = '''
@@ -437,7 +437,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(btc_combined_data_final),
+    sidebar_menu(btc_combined_data_final, 'BTC Data - End of Oct 2023'),
     main_pane.generate(
         header(),
         key_insights(),
