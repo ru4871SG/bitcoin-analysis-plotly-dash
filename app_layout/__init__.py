@@ -1,1 +1,1 @@
-from . import main_pane, sidebar
+from . import main_pane, data_table

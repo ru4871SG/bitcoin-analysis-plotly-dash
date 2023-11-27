@@ -7,6 +7,7 @@ Dash Page - BNB October 2023 Report
 from app import sidebar_menu
 
 # app_layout package
+import app_layout.data_table as data_table
 import app_layout.main_pane as main_pane
 
 import dash
@@ -238,7 +239,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(bnb_combined_data_final, 'BNB Data - End of Oct 2023'),
+    sidebar_menu(),
     main_pane.generate(
         header(),
         key_insights(),
@@ -265,5 +266,6 @@ layout = html.Div([
             protocol. Venus and CoinWind are the second and third largest DeFi protocols in the BSC, but their TVL \
             numbers are significantly lower than PancakeSwap. Most of the DeFi protocols in the BSC have shown \
             signs of decline.")
-    )
+    ),
+    data_table.generate(bnb_combined_data_final, "BNB Data Table - End of Oct 2023")
 ], id='main-container')

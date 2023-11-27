@@ -7,6 +7,7 @@ Dash Page - BTC October 2023 Report
 from app import sidebar_menu
 
 # app_layout package
+import app_layout.data_table as data_table
 import app_layout.main_pane as main_pane
 
 import dash
@@ -401,7 +402,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(btc_combined_data_final, 'BTC Data - End of Oct 2023'),
+    sidebar_menu(),
     main_pane.generate(
         header(),
         key_insights(),
@@ -456,5 +457,6 @@ layout = html.Div([
             open new channels. As for channel count, a higher channel count suggests a more interconnected and \
             potentially more decentralized network. Looks like there has been an inverse relationship between the two \
             in the month of October.")
-    )
+    ),
+    data_table.generate(btc_combined_data_final, "Bitcoin Data Table - End of Oct 2023")
 ], id='main-container')

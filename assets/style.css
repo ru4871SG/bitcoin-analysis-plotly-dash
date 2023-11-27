@@ -84,6 +84,13 @@ body {
     box-sizing: border-box;
 }
 
+#data-table {
+    width: 100%;
+    margin-top: 5px;
+    display: block;
+}
+
+
 .menu-container {
     overflowX: scroll;
     width: 90%;
@@ -97,7 +104,7 @@ body {
     color: white;
     text-decoration: underline;
     padding: 10px 20px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
@@ -166,6 +173,32 @@ body {
     margin-bottom: 10px;
 }
 
+H5 {
+    font-size: 15px;
+    margin-left: 15px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.menu-container .dropdown {
+    display: block;
+    width: 100%;
+}
+
 /*
 Desktop Layout
 */
@@ -174,12 +207,18 @@ Desktop Layout
         flex-direction: row;
     }
     #sidebar {
-        width: 30%;
+        width: 15%;
         height: 100vh;
         border-right: 1px solid black;
     }
     #main-pane {
-        width: 70%;
+        width: 65%;
+    }
+    #data-table {
+        width: 20%;
+        margin-top: 40px;
+        display: inline-block;
+        font-size: 10px;
     }
     .report-section__img {
         width: 80px;
@@ -193,5 +232,11 @@ Desktop Layout
     .report-section__column {
         flex: 1;
         margin: 0 10px;
+    }
+    H5 {
+        font-size: 12px;
+    }
+    .menu-link {
+        font-size: 14px;
     }
 }

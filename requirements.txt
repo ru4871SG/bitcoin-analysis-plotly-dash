@@ -6,3 +6,4 @@ requests
 yfinance
 scikit-learn
 plotly
+dash_bootstrap_components

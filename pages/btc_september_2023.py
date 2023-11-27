@@ -7,6 +7,7 @@ Dash Page - BTC September 2023 Report
 from app import sidebar_menu
 
 # app_layout package
+import app_layout.data_table as data_table
 import app_layout.main_pane as main_pane
 
 import dash
@@ -398,7 +399,7 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(btc_combined_data_final, 'BTC Data - End of Sep 2023'),
+    sidebar_menu(),
     main_pane.generate(
         header(),
         key_insights(),
@@ -453,5 +454,6 @@ layout = html.Div([
                     interconnected and potentially more decentralized network. Unfortunately, \
                     both numbers have not changed much. These numbers may potentially change \
                     in the bull market, though.")  
-    )
+    ),
+    data_table.generate(btc_combined_data_final, "Bitcoin Data Table - End of Sep 2023")
 ], id='main-container')
