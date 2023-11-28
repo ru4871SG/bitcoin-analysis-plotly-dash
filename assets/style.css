@@ -168,7 +168,7 @@ body {
 
 .report-section__img {
     width: 55px;
-    height: 55px;
+    height: 45px;
     padding-left: 20px;
     margin-bottom: 10px;
 }
@@ -221,8 +221,8 @@ Desktop Layout
         font-size: 10px;
     }
     .report-section__img {
-        width: 80px;
-        height: 80px;
+        width: 70px;
+        height: 55px;
         margin-bottom: 10px;
     }
     .report-section__row {
