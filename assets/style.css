@@ -136,7 +136,10 @@ tr:hover {
 .dropdown-width {
 	width: 10rem !important;
 }
-
+.dropdown-item {
+	width: 16rem !important;
+	font-size: 14px !important;
+}
 .flex-center {
 	display: flex !important;
 	align-items: center !important;
