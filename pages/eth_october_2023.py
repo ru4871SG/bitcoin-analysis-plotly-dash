@@ -3,12 +3,10 @@ Dash Page - ETH October 2023 Report
 """
 
 ### Import Libraries
-# import sidebar_menu from the main app.py
-from app import sidebar_menu
+from app import header
 
-# app_layout package
-import app_layout.data_table as data_table
-import app_layout.main_pane as main_pane
+import shared_functions.data_table as data_table
+import shared_functions.main_pane as main_pane
 
 import dash
 from dash import html
@@ -62,8 +60,8 @@ fig1_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -92,20 +90,18 @@ fig2.update_layout(
         'tickfont': {'color': 'white'},
         'titlefont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}},
     title_font={'color': 'white'}
 )
 
-def header():
-    return html.Div([
-        html.H1("Ethereum (ETH) October 2023 Report", className="title-text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1")
-    ])
+### Section 2: Define the App Layout and Texts
 
 def key_insights():
     return html.Div([
+        html.H1("Ethereum (ETH) October 2023 Report", className="title-text", id="title_text_1"),
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1"),
         html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("ETH has been following the uptrend of BTC against USD in October, but it has been \
@@ -154,8 +150,8 @@ fig3_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -206,8 +202,8 @@ fig4_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -239,35 +235,40 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(),
-    main_pane.generate(
-        header(),
-        key_insights(),
-        (fig1, "ETH Price Action vs. USD and BTC", "The chart above normalizes the starting prices of the two pairs \
-            (ETH/USD and ETH/BTC) to assess their relative price actions over the past couple of months. \
-            From the visualization, we can infer that from mid-August to late September, Ethereum (ETH) slightly \
-            underperformed against USD. Things started to change in the month of October, where ETH has been \
-            doing well, following BTC's sharp uptrend against USD. Compared to BTC, however, ETH has been underperforming."),
+    html.Div([
+        main_pane.generate(
+            header(),
+            key_insights(),
+            (fig1, "ETH Price Action vs. USD and BTC", "The chart above normalizes the starting prices of the two pairs \
+                (ETH/USD and ETH/BTC) to assess their relative price actions over the past couple of months. \
+                From the visualization, we can infer that from mid-August to late September, Ethereum (ETH) slightly \
+                underperformed against USD. Things started to change in the month of October, where ETH has been \
+                doing well, following BTC's sharp uptrend against USD. Compared to BTC, however, ETH has been underperforming."),
 
-        (fig2, "Ethereum Gas Fees in GWEI", "Shifting our focus to Ethereum's network data sourced from Owlracle, we \
-            explore the average gas fee trends in the month of October. The bar chart paints a picture of the average gas \
-            fee progression. There's a clear display of volatility in the gas fees throughout the observed duration. \
-            Specifically, around October 31st, the average gas price surged, reaching as high as 19 GWEI. This \
-            representation gives us insights into Ethereum's transactional cost fluctuations over this short yet \
-            insightful span."),
+            (fig2, "Ethereum Gas Fees in GWEI", "Shifting our focus to Ethereum's network data sourced from Owlracle, we \
+                explore the average gas fee trends in the month of October. The bar chart paints a picture of the average gas \
+                fee progression. There's a clear display of volatility in the gas fees throughout the observed duration. \
+                Specifically, around October 31st, the average gas price surged, reaching as high as 19 GWEI. This \
+                representation gives us insights into Ethereum's transactional cost fluctuations over this short yet \
+                insightful span."),
 
-        (fig3, "Ethereum TVL Historical Data (Past 3 Years)", "Diving into Ethereum's on-chain metrics from DefiLlama \
-            over the past three years, the line chart elucidates the trajectory of Ethereum's Total Value Locked (TVL). \
-            Starting from November 2020, there was a pronounced climb in TVL, indicating increased activity and trust in \
-            the Ethereum ecosystem. By November 2021, Ethereum's TVL reached its peak. This robust growth, however, \
-            began to taper post its peak, with a considerable pullback observed as we transitioned into 2023. In the recent \
-            months, the TVL appeared to stabilize, showcasing a period of consolidation in the network's value."),
+            (fig3, "Ethereum TVL Historical Data (Past 3 Years)", "Diving into Ethereum's on-chain metrics from DefiLlama \
+                over the past three years, the line chart elucidates the trajectory of Ethereum's Total Value Locked (TVL). \
+                Starting from November 2020, there was a pronounced climb in TVL, indicating increased activity and trust in \
+                the Ethereum ecosystem. By November 2021, Ethereum's TVL reached its peak. This robust growth, however, \
+                began to taper post its peak, with a considerable pullback observed as we transitioned into 2023. In the recent \
+                months, the TVL appeared to stabilize, showcasing a period of consolidation in the network's value."),
 
-        (fig4, "Ethereum Top 10 DeFi - Historical TVL Comparison", "The last chart shows the TVL comparison among the top \
-            DeFi protocols in the Ethereum chain. It is obvious that these projects exhibit distinct trajectories, \
-            reflecting their individual dynamisms and market sentiments. Lido still dominates the TVL comparison, \
-            followed by Aave and MakerDAO. The rest of the protocols are trailing behind. Interestingly, Lido TVL has \
-            been steadily increasing, while Aave and MakerDAO's TVL have been on a downtrend.")
-    ),
-    data_table.generate(eth_combined_data_final, "Ethereum Data Table - End of Oct 2023")
+            (fig4, "Ethereum Top 10 DeFi - Historical TVL Comparison", "The last chart shows the TVL comparison among the top \
+                DeFi protocols in the Ethereum chain. It is obvious that these projects exhibit distinct trajectories, \
+                reflecting their individual dynamisms and market sentiments. Lido still dominates the TVL comparison, \
+                followed by Aave and MakerDAO. The rest of the protocols are trailing behind. Interestingly, Lido TVL has \
+                been steadily increasing, while Aave and MakerDAO's TVL have been on a downtrend.")
+        ),
+        data_table.generate(eth_combined_data_final, "Ethereum Data Table - End of Oct 2023")
+
+    ], className='main'),
+    html.Div([
+        html.Img(src="assets/icons/ellipse.svg", alt=""),
+    ],className="ellipse")
 ], id='main-container')

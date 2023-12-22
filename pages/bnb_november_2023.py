@@ -3,12 +3,10 @@ Dash Page - BNB November 2023 Report
 """
 
 ### Import Libraries
-# import sidebar_menu from the main app.py
-from app import sidebar_menu
+from app import header
 
-# app_layout package
-import app_layout.data_table as data_table
-import app_layout.main_pane as main_pane
+import shared_functions.data_table as data_table
+import shared_functions.main_pane as main_pane
 
 import dash
 from dash import html
@@ -62,8 +60,8 @@ fig1_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -92,20 +90,18 @@ fig2.update_layout(
         'tickfont': {'color': 'white'},
         'titlefont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}},
     title_font={'color': 'white'}
 )
 
-def header():
-    return html.Div([
-        html.H1("BNB November 2023 Report", className="title-text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1")
-    ])
+### Section 2: Define the App Layout and Texts
 
 def key_insights():
     return html.Div([
+        html.H1("BNB November 2023 Report", className="title-text", id="title_text_1"),
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1"),
         html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("Just like most other top altcoins, BNB has been doing generally well against USD \
@@ -154,8 +150,8 @@ fig3_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -207,8 +203,8 @@ fig4_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -240,7 +236,8 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(),
+    html.Div([
+
     main_pane.generate(
         header(),
         key_insights(),
@@ -263,4 +260,8 @@ layout = html.Div([
             numbers are still way below PancakeSwap.")
     ),
     data_table.generate(bnb_combined_data_final, "BNB Data Table - End of Nov 2023")
+    ], className='main'),
+    html.Div([
+        html.Img(src="assets/icons/ellipse.svg", alt=""),
+    ],className="ellipse")
 ], id='main-container')

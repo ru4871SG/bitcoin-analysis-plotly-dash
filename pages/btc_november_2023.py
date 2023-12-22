@@ -3,12 +3,10 @@ Dash Page - BTC November 2023 Report
 """
 
 ### Import Libraries
-# import sidebar_menu from the main app.py
-from app import sidebar_menu
+from app import header
 
-# app_layout package
-import app_layout.data_table as data_table
-import app_layout.main_pane as main_pane
+import shared_functions.data_table as data_table
+import shared_functions.main_pane as main_pane
 
 import dash
 from dash import html
@@ -68,8 +66,8 @@ fig1_layout = go.Layout(
         'zerolinecolor': '#636363',
         'tickfont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -102,8 +100,8 @@ fig2_layout = fig2.layout
 
 fig2_layout.update(
     height=400,
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     yaxis={
         'gridcolor': '#636363',
         'zerolinecolor': '#636363',
@@ -145,8 +143,8 @@ fig2b_layout = fig2b.layout
 
 fig2b_layout.update(
     height=400,
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     yaxis={
         'gridcolor': '#636363',
         'zerolinecolor': '#636363',
@@ -189,8 +187,8 @@ fig3.update_layout(
         'tickfont': {'color': 'white'},
         'titlefont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}},
     title_font={'color': 'white'}
 )
@@ -239,8 +237,8 @@ fig4.update_layout(
         'tickfont': {'color': 'white'},
         'titlefont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}},
     title_font={'color': 'white'}
 )
@@ -287,8 +285,8 @@ layout_fig5 = go.Layout(
            'tickfont': {'color': 'white'}, 'titlefont': {'color': 'white'}},
     yaxis={'title': 'Volume in BTC', 'gridcolor': '#636363', 'zerolinecolor': '#636363', \
            'tickfont': {'color': 'white'}, 'titlefont': {'color': 'white'}},
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}},
     title_font={'color': 'white'}
 )
@@ -346,8 +344,8 @@ layout_fig6 = go.Layout(
         'tickfont': {'color': 'white', 'size': 8},
         'titlefont': {'color': 'white'}
     },
-    plot_bgcolor='#2b2b2b',
-    paper_bgcolor='#2b2b2b',
+    plot_bgcolor='#171713',
+    paper_bgcolor='#171713',
     legend={'font': {'color': 'white'}}
 )
 
@@ -355,14 +353,11 @@ fig6 = go.Figure(data=[trace1, trace2], layout=layout_fig6)
 
 
 ### Section 2: Define the App Layout and Texts
-def header():
-    return html.Div([
-        html.H1("Bitcoin (BTC) November 2023 Report", className="title-text", id="title_text_1"),
-        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1")
-    ])
 
 def key_insights():
     return html.Div([
+        html.H1("Bitcoin (BTC) November 2023 Report", className="title-text", id="title_text_1"),
+        html.H5(f"by: Ruddy Setiadi Gunawan", className="note-text", id="note_text_1"),
         html.H3("Key Insights:", className="heading-text", id="key_insight_heading"),
         html.Ul([
             html.Li("Bitcoin price action continues its bullish trend in the month of November, far \
@@ -403,7 +398,8 @@ index_string = '''
 
 # Define the app layout for this page
 layout = html.Div([
-    sidebar_menu(),
+    html.Div([
+
     main_pane.generate(
         header(),
         key_insights(),
@@ -452,4 +448,8 @@ layout = html.Div([
             has been generally stable since the beginning of September until the end of November.")
     ),
     data_table.generate(btc_combined_data_final, "Bitcoin Data Table - End of Nov 2023")
+    ], className='main'),
+    html.Div([
+        html.Img(src="assets/icons/ellipse.svg", alt=""),
+    ],className="ellipse")
 ], id='main-container')
