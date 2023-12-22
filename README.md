@@ -1,6 +1,6 @@
 # Bitcoin Analysis with Plotly and Dash
 
-Welcome to the GitHub repo for my analysis reports on Bitcoin and other cryptocurrencies. You can check the web app on Render.com: [https://app-25z1.onrender.com](https://app-25z1.onrender.com)
+Welcome to the GitHub repo for my analysis reports on Bitcoin and other cryptocurrencies. You can check the web app on Render.com: [https://research.deftify.io](https://research.deftify.io)
 
 These analysis reports use the plotly library for the data visualizations and the dash library for the web app.
 
