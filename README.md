@@ -2,7 +2,7 @@
 
 Welcome to the GitHub repo for my analysis report web app on Bitcoin and other cryptocurrencies. You can check the web app here: [https://research.deftify.io/](https://research.deftify.io/)
 
-These analysis reports use Plotly for the data visualizations and Dash to build the web dashboard.
+This web app use Plotly for the data visualizations and Dash to build the web dashboard.
 
 ## Table of Contents
 
